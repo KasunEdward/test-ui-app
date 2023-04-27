@@ -12,26 +12,35 @@ import OrderMain from "./pages/order/OrderMain";
 import Home from "./pages/home/HomePage";
 import LoginPage from "./pages/auth/Login";
 import useToken from "./hooks/useToken";
+import { AuthContext, AuthProvider } from "./context/AuthProvider";
+import { useContext } from "react";
+import Auth from "./pages/auth/Auth";
+import { ROLE_FOOD_SEEKER } from "./constants/Role";
+import Unauthorized from "./pages/common/Unauthorized";
 
 function App() {
-  const { token, setToken, clearToken } = useToken();
+  const { auth } = useContext(AuthContext);
 
   return (
+    
     <BrowserRouter>
-      {token && <NavBar clearToken={clearToken} />}
+      {auth?.role && <NavBar/>}
+      {/* <AuthProvider> */}
       <Routes>
         <Route
           path="/login"
-          element={
-            token ? <Navigate to="/" /> : <LoginPage setToken={setToken} />
-          }
+          element={<LoginPage />}
         />
-        <Route path="/" element={token ? <Home /> : <Navigate to="/login" />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route
-          path="/order"
-          element={token ? <OrderMain /> : <Navigate to="/login" />}
+          path="/"
+          element={<Home />}
         />
+        <Route element={<Auth allowedRoles={[ROLE_FOOD_SEEKER]} />}>
+          <Route path="/order" element={<OrderMain />} />
+        </Route>
       </Routes>
+      {/* </AuthProvider> */}
     </BrowserRouter>
   );
 }

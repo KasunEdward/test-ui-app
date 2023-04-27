@@ -1,3 +1,8 @@
+/**
+ * Home component.
+ *
+ * @component
+ */
 const Home = () => {
     return(
         <p>

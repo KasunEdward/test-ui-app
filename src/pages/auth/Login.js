@@ -13,17 +13,26 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { redirect, useLocation, useNavigate } from "react-router-dom";
+import { ROLE_FOOD_PROCESSOR } from "../../constants/Role";
+import { AuthContext } from "../../context/AuthProvider";
 import useToken from "../../hooks/useToken";
 import BackgroundImage from "../../images/background.png";
 
-const LoginPage = ({ setToken }) => {
+const LoginPage = () => {
   // const {token, setToken} = useToken();
   const navigate = useNavigate();
+  const location = useLocation();
+  const {auth, setAuth} = useContext(AuthContext);
 
   const handleSubmit = () => {
-    const role = 
+    const role = ROLE_FOOD_PROCESSOR;
+    const token = "test@123";
+    const name =  "test_user";
+
+    setAuth({role, token, name})
+  
     navigate("/");
   };
 
